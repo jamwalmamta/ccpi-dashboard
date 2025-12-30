@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h4>Country Comparison</h4>
+
+<form method="POST" class="row g-3 mb-4">
+    <div class="col-md-3">
+        <label class="form-label">Country 1</label>
+        <select name="country1" class="form-select">
+            {% for c in countries %}
+                <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">Country 2</label>
+        <select name="country2" class="form-select">
+            {% for c in countries %}
+                <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <label class="form-label">Year</label>
+        <input type="number" name="year" class="form-control" value="2021">
+    </div>
+
+    <div class="col-md-2 align-self-end">
+        <button class="btn btn-primary">Compare</button>
+    </div>
+</form>
+
+{% if data is not none %}
+
+<h5>Comparison Table</h5>
+<table class="table table-bordered table-sm">
+    <thead class="table-light">
+        <tr>
+            <th>Country</th>
+            <th>GHG</th>
+            <th>Renewable</th>
+            <th>Energy Use</th>
+            <th>Policy</th>
+            <th>Overall CCPI</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data.itertuples() %}
+        <tr>
+            <td>{{ row.country }}</td>
+            <td>{{ row.ghg_score }}</td>
+            <td>{{ row.renewable_energy }}</td>
+            <td>{{ row.energy_use }}</td>
+            <td>{{ row.climate_policy }}</td>
+            <td>{{ row.overall_ccpi }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h5 class="mt-4">Visual Comparison</h5>
+
+<div class="row">
+    <div class="col-md-6">
+        <img src="{{ chart_path }}" class="img-fluid">
+        <p class="text-center small">
+            Indicator-wise Comparison ({{ selected_year }})
+        </p>
+    </div>
+
+    <div class="col-md-6">
+        <img src="{{ line_chart }}" class="img-fluid">
+        <p class="text-center small">
+            Overall CCPI Trend (2018–2026)
+        </p>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

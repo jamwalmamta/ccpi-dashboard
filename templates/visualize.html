@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="mb-3">Data Visualisation Dashboard</h3>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#top10">Top 10</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#bottom10">Bottom 10</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#trend">Yearly Trends</a>
+    </li>
+</ul>
+
+<div class="tab-content mt-4">
+
+    <!-- TOP 10 TAB -->
+    <div class="tab-pane fade show active" id="top10">
+        <form method="POST" class="mb-3">
+            <label>Select Year</label>
+            <select name="year" class="form-select w-25">
+                {% for y in years %}
+                    <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-primary mt-2">View</button>
+        </form>
+
+        <img src="{{ top_chart }}" class="img-fluid">
+    </div>
+
+    <!-- BOTTOM 10 TAB -->
+    <div class="tab-pane fade" id="bottom10">
+        <form method="POST" class="mb-3">
+            <label>Select Year</label>
+            <select name="year" class="form-select w-25">
+                {% for y in years %}
+                    <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-danger mt-2">View</button>
+        </form>
+
+        <img src="{{ bottom_chart }}" class="img-fluid">
+    </div>
+
+    <!-- TREND TAB -->
+    <div class="tab-pane fade" id="trend">
+        <form method="POST" class="mb-3">
+            <label>Select Country</label>
+            <select name="country" class="form-select w-50">
+                {% for c in countries %}
+                    <option value="{{ c }}" {% if c == selected_country %}selected{% endif %}>{{ c }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-success mt-2">View Trend</button>
+        </form>
+
+        {% if trend_chart %}
+            <img src="{{ trend_chart }}" class="img-fluid">
+            <p class="mt-2"><b>Insight:</b> {{ insight }}</p>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

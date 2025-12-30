@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- PROJECT TITLE -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Climate Change Performance Index (CCPI) Analysis System</h2>
+        <p class="text-muted">
+            A data-driven dashboard for analyzing global climate performance (2018–2026)
+        </p>
+    </div>
+
+    <!-- INTRODUCTION CARD -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title">🌍 Project Overview</h5>
+            <p class="card-text">
+                Climate change is one of the most pressing challenges of the 21st century.
+                Countries worldwide are adopting diverse strategies to reduce greenhouse gas
+                emissions, expand renewable energy usage, improve energy efficiency, and
+                strengthen climate policies.
+            </p>
+            <p class="card-text">
+                The <b>CCPI Analysis System</b> transforms Climate Change Performance Index data
+                into meaningful insights using data analytics, visualization, and machine
+                learning. The system enables year-wise analysis, country comparisons, trend
+                evaluation, and future performance prediction.
+            </p>
+        </div>
+    </div>
+
+    <!-- SDG ALIGNMENT -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-success">
+                <div class="card-body">
+                    <h6 class="card-title text-success">SDG 13</h6>
+                    <p class="card-text">
+                        Supports <b>Climate Action</b> by tracking and comparing national
+                        climate performance indicators.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-primary">
+                <div class="card-body">
+                    <h6 class="card-title text-primary">SDG 7</h6>
+                    <p class="card-text">
+                        Encourages <b>Affordable and Clean Energy</b> by analyzing renewable
+                        energy adoption trends.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-warning">
+                <div class="card-body">
+                    <h6 class="card-title text-warning">SDG 17</h6>
+                    <p class="card-text">
+                        Promotes <b>Partnerships for the Goals</b> through transparent,
+                        comparable climate data insights.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KEY FEATURES -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title">📊 Key Features</h5>
+            <ul class="mb-0">
+                <li>Year-wise Top 10 and Bottom 10 country rankings</li>
+                <li>Interactive trend analysis for individual countries</li>
+                <li>Choropleth maps for global climate indicators</li>
+                <li>Country-to-country comparison using tables and charts</li>
+                <li>Machine learning-based prediction of future CCPI scores</li>
+                <li>Exportable PDF and Excel reports for academic use</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- CLIMATE INDICATORS -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title">🌱 Climate Indicators Used</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <ul>
+                        <li>GHG Emissions Score</li>
+                        <li>Renewable Energy Score</li>
+                        <li>Energy Use Score</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul>
+                        <li>Climate Policy Score</li>
+                        <li>Overall CCPI Score</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD PREVIEW (OPTIONAL TEXT) -->
+    <div class="alert alert-info">
+        Use the navigation menu above to explore visualizations, comparisons,
+        predictions, and downloadable reports.
+    </div>
+
+</div>
+
+{% endblock %}

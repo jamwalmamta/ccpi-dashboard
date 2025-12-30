@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h4>Global CCPI Choropleth Map</h4>
+
+<form method="POST" class="row g-3 mb-3">
+    <div class="col-md-4">
+        <label class="form-label">Climate Indicator</label>
+        <select name="indicator" class="form-select">
+            {% for key, label in indicators.items() %}
+                <option value="{{ key }}"
+                    {% if key == selected_indicator %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">Year</label>
+        <select name="year" class="form-select">
+            {% for y in years %}
+                <option value="{{ y }}"
+                    {% if y == selected_year %}selected{% endif %}>
+                    {{ y }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-3 align-self-end">
+        <button class="btn btn-primary">View Map</button>
+    </div>
+</form>
+
+<hr>
+
+{% if map_html %}
+    {{ map_html | safe }}
+{% else %}
+    <div class="alert alert-warning">
+        {{ message }}
+    </div>
+{% endif %}
+
+<p class="mt-2 text-muted">
+Countries without data for the selected indicator are intentionally excluded.
+</p>
+
+{% endblock %}

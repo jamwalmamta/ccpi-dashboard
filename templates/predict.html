@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h4>CCPI Prediction (Machine Learning)</h4>
+
+<form method="POST" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <label class="form-label">Country</label>
+        <select name="country" class="form-select">
+            {% for c in countries %}
+                <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">Future Year</label>
+        <input type="number" name="year" class="form-control" value="2027">
+    </div>
+
+    <div class="col-md-2 align-self-end">
+        <button class="btn btn-danger">Predict</button>
+    </div>
+</form>
+
+{% if prediction %}
+
+<h5>Predicted Climate Indicators</h5>
+
+<table class="table table-bordered table-sm w-75">
+    <thead class="table-light">
+        <tr>
+            <th>Indicator</th>
+            <th>Predicted Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>GHG Score</td>
+            <td>{{ prediction.ghg_score }}</td>
+        </tr>
+        <tr>
+            <td>Renewable Energy</td>
+            <td>{{ prediction.renewable_energy }}</td>
+        </tr>
+        <tr>
+            <td>Energy Use</td>
+            <td>{{ prediction.energy_use }}</td>
+        </tr>
+        <tr>
+            <td>Climate Policy</td>
+            <td>{{ prediction.climate_policy }}</td>
+        </tr>
+        <tr class="table-primary">
+            <td><b>Overall CCPI</b></td>
+            <td><b>{{ prediction.overall_ccpi }}</b></td>
+        </tr>
+    </tbody>
+</table>
+
+<p class="text-muted">
+Prediction for <b>{{ prediction.country }}</b> in <b>{{ prediction.year }}</b>,  
+based on historical CCPI data (2018–2026) using multi-output regression.
+</p>
+
+{% endif %}
+
+{% endblock %}
