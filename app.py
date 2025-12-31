@@ -15,7 +15,11 @@ from io import BytesIO
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Image
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import A4
-import geopandas as gpd
+import plotly.io as pio
+if pio.kaleido.scope is not None:
+    pio.kaleido.scope.default_format = "png"
+
+
 
 
 app = Flask(__name__)
@@ -30,53 +34,29 @@ os.makedirs(CHART_DIR, exist_ok=True)
 def get_db():
     return sqlite3.connect(DB_PATH)
 
-def generate_choropleth_image(df, indicator, year):
-    """
-    Generates a static choropleth map image for PDF reports
-    """
-
-    # Load world shapefile (LOCAL)
-    world = gpd.read_file("data/world_map/ne_110m_admin_0_countries.shp")
-
-    # Normalize country names column
-    world["country"] = world["NAME"]
-
-    # Merge CCPI data
-    merged = world.merge(
+def generate_choropleth_image(df, year, indicator, label):
+    fig = px.choropleth(
         df,
-        how="left",
-        on="country"
+        locations="country",
+        locationmode="country names",
+        color=indicator,
+        hover_name="country",
+        color_continuous_scale="YlGnBu",
+        title=f"{label} – {year}"
     )
 
-    # Convert indicator to numeric
-    merged[indicator] = pd.to_numeric(merged[indicator], errors="coerce")
-
-    # Plot
-    fig, ax = plt.subplots(figsize=(10, 5))
-    merged.plot(
-        column=indicator,
-        ax=ax,
-        legend=True,
-        cmap="Blues",
-        missing_kwds={
-            "color": "lightgrey",
-            "label": "No data"
-        }
+    fig.update_layout(
+        geo=dict(showframe=False, showcoastlines=True),
+        margin=dict(l=0, r=0, t=40, b=0)
     )
 
-    ax.set_title(
-        f"{indicator.replace('_', ' ').title()} – {year}",
-        fontsize=12
-    )
-    ax.axis("off")
+    path = f"static/charts/map_{indicator}_{year}.png"
 
-    # Save
-    os.makedirs("static/reports", exist_ok=True)
-    path = f"static/reports/map_{indicator}_{year}.png"
-    plt.savefig(path, bbox_inches="tight")
-    plt.close()
+    # Export as image (THIS is the key)
+    fig.write_image(path, width=900, height=500)
 
     return path
+
 
 # ------------------ HOME DASHBOARD ------------------
 
@@ -647,8 +627,6 @@ def export_pdf():
     plt.close()
 
     # -------- GENERATE CHOROPLETH MAPS --------
-    map_paths = []
-
     indicators = {
         "ghg_score": "GHG Emissions Score",
         "renewable_energy": "Renewable Energy Score",
@@ -659,13 +637,15 @@ def export_pdf():
 
     map_paths = []
 
-    for indicator_key, indicator_label in indicators.items():
+    for key, label in indicators.items():
         path = generate_choropleth_image(
-            map_df,          # dataframe filtered for selected year
-            indicator_key,   # column name
-            year              # selected year
+            map_df,
+            year,
+            key,
+            label
         )
-        map_paths.append((indicator_label, path))
+        map_paths.append((label, path))
+
 
 
 
@@ -697,9 +677,9 @@ def export_pdf():
 
     elements.append(Paragraph("<br/>Global Climate Performance Maps", styles["Heading2"]))
 
-    for label, img_path in map_paths:
+    for label, path in map_paths:
         elements.append(Paragraph(label, styles["Heading3"]))
-        elements.append(Image(img_path, width=450, height=250))
+        elements.append(Image(path, width=450, height=250))
 
 
     doc.build(elements)
