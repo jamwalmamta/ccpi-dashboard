@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h4>Data Visualisation</h4>
+
+<!-- YEAR SELECTOR FOR TOP/BOTTOM -->
+<form method="POST" class="row g-3 mb-3">
+    <div class="col-md-3">
+        <label class="form-label">Select Year</label>
+        <select name="year" class="form-select">
+            {% for y in years %}
+                <option value="{{ y }}"
+                    {% if y == selected_year %}selected{% endif %}>
+                    {{ y }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-2 align-self-end">
+        <button class="btn btn-primary">Update</button>
+    </div>
+</form>
+
+<!-- INNER TABS -->
+<ul class="nav nav-tabs" role="tablist">
+
+    <li class="nav-item">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#top10">
+            Top 10 Countries
+        </button>
+    </li>
+
+    <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#bottom10">
+            Bottom 10 Countries
+        </button>
+    </li>
+
+    <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#trends">
+            Yearly Trends
+        </button>
+    </li>
+
+</ul>
+
+<!-- TAB CONTENT -->
+<div class="tab-content mt-4">
+
+    <!-- TOP 10 TAB -->
+    <div class="tab-pane fade show active" id="top10">
+        <h6>Top 10 Performing Countries ({{ selected_year }})</h6>
+        <img src="{{ top_chart }}" class="img-fluid">
+    </div>
+
+    <!-- BOTTOM 10 TAB -->
+    <div class="tab-pane fade" id="bottom10">
+        <h6>Bottom 10 Performing Countries ({{ selected_year }})</h6>
+        <img src="{{ bottom_chart }}" class="img-fluid">
+    </div>
+
+    <!-- YEARLY TREND TAB -->
+    <div class="tab-pane fade" id="trends">
+        <h6>Country-wise CCPI Trend</h6>
+
+        <form method="POST" class="row g-3 mb-3">
+            <div class="col-md-4">
+                <select name="country" class="form-select">
+                    {% for c in countries %}
+                        <option value="{{ c }}">{{ c }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn btn-secondary">View Trend</button>
+            </div>
+        </form>
+
+        {% if trend_chart %}
+            <img src="{{ trend_chart }}" class="img-fluid">
+            <p class="text-muted"><b>Insight:</b> {{ insight }}</p>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

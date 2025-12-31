@@ -4,6 +4,7 @@ numpy
 matplotlib
 seaborn
 plotly
+kaleido==0.2.1.post1
 scikit-learn
 reportlab
 openpyxl

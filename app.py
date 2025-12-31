@@ -16,8 +16,16 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Image
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import A4
 import plotly.io as pio
-if pio.kaleido.scope is not None:
-    pio.kaleido.scope.default_format = "png"
+
+pio.renderers.default = "png"
+
+# Force Kaleido startup
+pio.kaleido.scope.chromium_args = [
+    "--disable-gpu",
+    "--no-sandbox",
+    "--single-process"
+]
+
 
 
 
@@ -52,10 +60,13 @@ def generate_choropleth_image(df, year, indicator, label):
 
     path = f"static/charts/map_{indicator}_{year}.png"
 
-    # Export as image (THIS is the key)
-    fig.write_image(path, width=900, height=500)
+    img_bytes = fig.to_image(format="png", width=900, height=500)
+
+    with open(path, "wb") as f:
+        f.write(img_bytes)
 
     return path
+
 
 
 # ------------------ HOME DASHBOARD ------------------
