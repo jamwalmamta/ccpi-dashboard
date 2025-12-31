@@ -17,17 +17,6 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import A4
 import plotly.io as pio
 
-pio.renderers.default = "png"
-
-# Force Kaleido startup
-pio.kaleido.scope.chromium_args = [
-    "--disable-gpu",
-    "--no-sandbox",
-    "--single-process"
-]
-
-
-
 
 
 app = Flask(__name__)
